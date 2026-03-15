@@ -3,6 +3,8 @@ Proyecto DAM – Sistema de gestión de reservas de pistas de pádel.
 
 En este repositorio se incluyen los avances realizados en el proyecto intermodular de DAM correspondientes a la **primera entrega (50%)**.
 
+Se entrega un pdf con el contenido realizado hasta la fecha de la memoria: **Copia de Esqueleto_Memoria_TFG 50%**
+
 El contenido del repositorio se organiza en las siguientes carpetas:
 
 - **MySQL**: contiene los scripts SQL utilizados para la creación de la base de datos, las tablas y la inserción de datos de prueba.
