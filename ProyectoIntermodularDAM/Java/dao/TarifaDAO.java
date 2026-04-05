@@ -8,19 +8,14 @@ import java.util.List;
 
 public class TarifaDAO {
 
-    private Connection conn;
-
-    public TarifaDAO() throws SQLException {
-        this.conn = conexion.getConnection();
-    }
-
     public List<Tarifa> obtenerTarifas() throws SQLException {
 
         List<Tarifa> tarifas = new ArrayList<>();
         String sql = "SELECT * FROM tarifa";
 
-        try (Statement st = conn.createStatement();
-             ResultSet rs = st.executeQuery(sql)) {
+        try (Connection conn = conexion.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
 
@@ -39,11 +34,14 @@ public class TarifaDAO {
         return tarifas;
     }
 
+
+
     public void insertarTarifa(Tarifa tarifa) throws SQLException {
 
         String sql = "INSERT INTO tarifa (tipo_pista, tipo_dia, franja_horaria, precio) VALUES (?, ?, ?, ?)";
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = conexion.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, tarifa.getTipo_pista());
             ps.setString(2, tarifa.getTipo_dia());
@@ -54,11 +52,14 @@ public class TarifaDAO {
         }
     }
 
+
+
     public void actualizarTarifa(Tarifa tarifa) throws SQLException {
 
         String sql = "UPDATE tarifa SET tipo_pista=?, tipo_dia=?, franja_horaria=?, precio=? WHERE id_tarifa=?";
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = conexion.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, tarifa.getTipo_pista());
             ps.setString(2, tarifa.getTipo_dia());
@@ -70,11 +71,14 @@ public class TarifaDAO {
         }
     }
 
+
+
     public void eliminarTarifa(int id_tarifa) throws SQLException {
 
         String sql = "DELETE FROM tarifa WHERE id_tarifa=?";
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = conexion.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, id_tarifa);
 

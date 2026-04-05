@@ -1,4 +1,3 @@
-
 -- Creación de la base de datos
 CREATE DATABASE club_padel;
 

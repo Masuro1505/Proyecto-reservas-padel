@@ -8,19 +8,14 @@ import java.util.List;
 
 public class PagoDAO {
 
-    private Connection conn;
-
-    public PagoDAO() throws SQLException {
-        this.conn = conexion.getConnection();
-    }
-
     public List<Pago> obtenerPagos() throws SQLException {
 
         List<Pago> pagos = new ArrayList<>();
         String sql = "SELECT * FROM pago";
 
-        try (Statement st = conn.createStatement();
-             ResultSet rs = st.executeQuery(sql)) {
+        try (Connection conn = conexion.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
 
@@ -39,11 +34,14 @@ public class PagoDAO {
         return pagos;
     }
 
+
+
     public void insertarPago(Pago pago) throws SQLException {
 
         String sql = "INSERT INTO pago (id_reserva, fecha_pago, metodo_pago, cantidad) VALUES (?, ?, ?, ?)";
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = conexion.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, pago.getId_reserva());
             ps.setDate(2, pago.getFecha_pago());
@@ -54,11 +52,14 @@ public class PagoDAO {
         }
     }
 
+
+
     public void actualizarPago(Pago pago) throws SQLException {
 
         String sql = "UPDATE pago SET id_reserva=?, fecha_pago=?, metodo_pago=?, cantidad=? WHERE id_pago=?";
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = conexion.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, pago.getId_reserva());
             ps.setDate(2, pago.getFecha_pago());
@@ -70,11 +71,14 @@ public class PagoDAO {
         }
     }
 
+
+    
     public void eliminarPago(int id_pago) throws SQLException {
 
         String sql = "DELETE FROM pago WHERE id_pago=?";
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = conexion.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, id_pago);
 

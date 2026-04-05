@@ -8,21 +8,14 @@ import java.util.List;
 
 public class PistaDAO {
 
-    private Connection conn;
-
-    public PistaDAO() throws SQLException {
-        this.conn = conexion.getConnection();
-    }
-
-
-    
     public List<Pista> obtenerPistas() throws SQLException {
 
         List<Pista> pistas = new ArrayList<>();
         String sql = "SELECT * FROM pista";
 
-        try (Statement st = conn.createStatement();
-             ResultSet rs = st.executeQuery(sql)) {
+        try (Connection conn = conexion.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
 
@@ -46,7 +39,8 @@ public class PistaDAO {
 
         String sql = "INSERT INTO pista (nombre, tipo, estado) VALUES (?, ?, ?)";
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = conexion.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, pista.getNombre());
             ps.setString(2, pista.getTipo());
@@ -62,7 +56,8 @@ public class PistaDAO {
 
         String sql = "UPDATE pista SET nombre=?, tipo=?, estado=? WHERE id_pista=?";
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = conexion.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, pista.getNombre());
             ps.setString(2, pista.getTipo());
@@ -79,7 +74,8 @@ public class PistaDAO {
 
         String sql = "DELETE FROM pista WHERE id_pista=?";
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = conexion.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, id_pista);
 

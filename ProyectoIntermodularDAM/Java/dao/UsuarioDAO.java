@@ -8,21 +8,14 @@ import java.util.List;
 
 public class UsuarioDAO {
 
-    private Connection conn;
-
-    
-    
-    public UsuarioDAO() throws SQLException {
-        this.conn = conexion.getConnection();
-    }
-
     public List<Usuario> obtenerUsuarios() throws SQLException {
 
         List<Usuario> usuarios = new ArrayList<>();
         String sql = "SELECT * FROM usuario";
 
-        try (Statement st = conn.createStatement();
-             ResultSet rs = st.executeQuery(sql)) {
+        try (Connection conn = conexion.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
 
@@ -48,7 +41,8 @@ public class UsuarioDAO {
 
         String sql = "INSERT INTO usuario (nombre, apellidos, telefono, email) VALUES (?, ?, ?, ?)";
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = conexion.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, usuario.getNombre());
             ps.setString(2, usuario.getApellidos());
@@ -65,7 +59,8 @@ public class UsuarioDAO {
 
         String sql = "UPDATE usuario SET nombre=?, apellidos=?, telefono=?, email=? WHERE id_usuario=?";
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = conexion.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, usuario.getNombre());
             ps.setString(2, usuario.getApellidos());
@@ -83,7 +78,8 @@ public class UsuarioDAO {
 
         String sql = "DELETE FROM usuario WHERE id_usuario=?";
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = conexion.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, id_usuario);
 
